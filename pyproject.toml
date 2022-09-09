@@ -1,0 +1,22 @@
+[project]
+name = ""
+version = ""
+description = ""
+authors = [
+    {name = "Andrei Teleron", email = "ateleron2@gmail.com"},
+]
+dependencies = [
+    "wagtail>=4.0.1",
+    "python-decouple>=3.6",
+    "psycopg2>=2.9.3",
+    "django-cors-headers>=3.13.0",
+]
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-pep517>=1.0.0"]
+build-backend = "pdm.pep517.api"
+
+[tool]
+[tool.pdm]
