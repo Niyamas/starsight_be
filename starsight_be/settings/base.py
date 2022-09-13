@@ -27,9 +27,11 @@ SECRET_KEY = config('SECRET_KEY')
 # Application definition
 
 INSTALLED_APPS = [
+    "apps.articles",
     "apps.home",
     "apps.navigations",
     "apps.search",
+    "apps.streamfields",
 
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",

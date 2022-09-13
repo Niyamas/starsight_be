@@ -29,20 +29,8 @@ class TypeChoiceSerializer(ChoiceField):
         return key
     self.fail('invalid_choice', input=data)
 
-class BlogListingChildPagesSerializer(Field):
+class ArticleListingChildPagesSerializer(Field):
   def to_representation(self, child_pages):
-    """
-    return_items = []
-    for page in child_pages:
-    item_dict = {
-      'id': page.id,
-      'title': page.title,
-      'slug': page.slug,
-      'url': page.url
-    }
-    return_items.append(item_dict)
-    """
-
     return [
       {
         'id': page.id,
