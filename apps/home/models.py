@@ -3,7 +3,7 @@ from wagtail.models import Page
 from wagtail.fields import StreamField
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, PageChooserPanel, FieldRowPanel
 from wagtail.api import APIField
-from services.serializers import ImageURLSerializer, LinkUrlSerializer
+from services.serializers import ImageSerializer, LinkSerializer
 from services.variables import image_alt_help_text, optional_button_help_text
 
 
@@ -34,6 +34,6 @@ class HomePage(Page):
 	]
 
 	api_fields = [
-		APIField('hero_image', serializer=ImageURLSerializer()),
+		APIField('hero_image', serializer=ImageSerializer()),
 		APIField('hero_image_alt'),
 	]

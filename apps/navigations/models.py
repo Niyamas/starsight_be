@@ -10,7 +10,7 @@ from wagtail.admin.panels import (
 from wagtail.api import APIField
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
-from services.serializers import LinkUrlSerializer
+from services.serializers import LinkSerializer
 
 
 class Links(Orderable):
@@ -33,7 +33,7 @@ class Links(Orderable):
 
   api_fields = [
     APIField('title'),
-    APIField('page', serializer=LinkUrlSerializer()),
+    APIField('page', serializer=LinkSerializer()),
     APIField('url'),
     APIField('open_in_new_page'),
   ]

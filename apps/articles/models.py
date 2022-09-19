@@ -15,7 +15,7 @@ from wagtail.api import APIField
 from modelcluster.fields import ParentalKey
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
-from services.serializers import ArticleListingChildPagesSerializer, ImageURLSerializer, TotalPostNumberSerializer
+from services.serializers import ArticleListingChildPagesSerializer, ImageSerializer, TotalPostNumberSerializer
 from services.variables import image_alt_help_text
 from apps.streamfields.blocks import (
   CustomRichTextBlock,
@@ -26,7 +26,7 @@ from apps.streamfields.blocks import (
 class ArticleListingPage(Page):
   max_count = 1
   parent_page_types = ['home.HomePage']
-  subpage_types = ['articles.ArticleDetailPage',]
+  subpage_types = ['articles.ArticleDetailPage', 'articles.BigHeroArticleDetailPage']
 
   api_fields = [
     APIField('total_post_number', TotalPostNumberSerializer(source='get_total_post_number')),
@@ -60,7 +60,7 @@ class ArticleDetailPage(Page):
   topic = models.ForeignKey('articles.ArticleTopic', blank=False, null=True, on_delete=models.SET_NULL)
   image = models.ForeignKey('wagtailimages.Image', blank=False, null=True, on_delete=models.SET_NULL, related_name='+')
   alt = models.CharField(max_length=125, blank=False, null=True, help_text=image_alt_help_text)
-  caption = models.CharField(max_length=100, blank=True, null=True, help_text="Enter the source name for this image")
+  caption = models.CharField(max_length=100, blank=True, null=True)
   content = StreamField([
     ('article_rich_text_block', CustomRichTextBlock()),
     ('detailed_image_block', DetailedImageBlock()),
@@ -88,9 +88,43 @@ class ArticleDetailPage(Page):
   api_fields = [
     APIField('preview_text'),
     APIField('topic', serializer=serializers.StringRelatedField(many=False)),
-    APIField('image', serializer=ImageURLSerializer()),
+    APIField('image', serializer=ImageSerializer()),
     APIField('alt'),
     APIField('caption'),
+    APIField('article_authors'),
+    APIField('content'),
+    APIField('tags'),
+    APIField('published_date'),
+  ]
+
+class BigHeroArticleDetailPage(ArticleDetailPage):
+  credits = models.CharField(max_length=100, blank=True, null=True, help_text="Enter the source name for this image")
+  source_url = models.URLField(max_length=500, blank=True, null=True)
+
+  content_panels = Page.content_panels + [
+    FieldPanel('preview_text'),
+    FieldPanel('topic'),
+    MultiFieldPanel([
+      FieldPanel('image'),
+      FieldPanel('alt'),
+      FieldPanel('credits'),
+      FieldPanel('source_url'),
+    ], heading='Header Image'),
+    MultiFieldPanel([
+      InlinePanel('article_authors', min_num=1, max_num=3),
+    ], heading='Authors', help_text="You may add 1-3 authors."),
+    FieldPanel('content'),
+    FieldPanel('tags'),
+    FieldPanel('published_date'),
+  ]
+
+  api_fields = [
+    APIField('preview_text'),
+    APIField('topic', serializer=serializers.StringRelatedField(many=False)),
+    APIField('image', serializer=ImageSerializer()),
+    APIField('alt'),
+    APIField('credits'),
+    APIField('source_url'),
     APIField('article_authors'),
     APIField('content'),
     APIField('tags'),

@@ -2,11 +2,11 @@ from wagtail.core.templatetags.wagtailcore_tags import richtext
 from rest_framework.fields import Field
 from rest_framework.serializers import ChoiceField
 
-class ImageURLSerializer(Field):
+class ImageSerializer(Field):
   def to_representation(self, image):
     return image.file.url
 
-class LinkUrlSerializer(Field):
+class LinkSerializer(Field):
   def to_representation(self, page):
     return page.url
 
